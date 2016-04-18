@@ -108,6 +108,12 @@ If you are trying to implement CJPAdController in a custom view controller that 
 [CJPAdController sharedInstance].overrideIsNavController = YES;
 ```
 
+### Adjusts the view controller, if needed
+If you need the view controller's frame to be adjusted when an ad appears or disappears, the `adjustsViewControllerFrame` property will ensure that.
+``` objective-c
+[CJPAdController sharedInstance].adjustsViewControllerFrame = YES;
+```
+
 ## More
 There are a number of AdMob specific options that can also be configured, as well as a number of general methods for hiding, removing, restoring ads etc.
 AdMob ads may also be targeted based on your users' age, gender and location. Please read the comments in the header file before using any of these.
