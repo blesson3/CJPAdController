@@ -65,6 +65,9 @@ typedef NS_ENUM(NSInteger, CJPAdPosition) {
 
 /* SETTINGS */
 
+/// Adjusts the frame of the starting view controller to accommodate for the ad space taken up
+@property (nonatomic, assign) BOOL adjustsViewControllerFrame; // defaults to YES
+
 /// Array of ad networks to be used, in order of preference (default: CJPAdNetworkiAd, CJPAdNetworkAdMob)
 @property (nonatomic, copy, setter=setAdNetworks:) NSArray *adNetworks;
 

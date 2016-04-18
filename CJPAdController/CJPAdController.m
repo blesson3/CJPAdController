@@ -66,6 +66,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         _preferredAds = CJPAdNetworkiAd;
         _initialDelay = 0.0;
         _useAdMobSmartSize = YES;
+        _adjustsViewControllerFrame = YES;
     }
     return self;
 }
@@ -114,6 +115,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 - (void)createBanner:(NSNumber *)adID
 {
     CJPAdNetwork adType = (CJPAdNetwork)[adID intValue];
+    
     BOOL isPortrait = UIInterfaceOrientationIsPortrait(self.interfaceOrientation);
     BOOL isIPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? YES : NO;
     
@@ -376,14 +378,8 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
 
 - (BOOL)prefersStatusBarHidden
 {
-    // Return the application's statusBarHidden if the UIViewControllerBasedStatusBarAppearance key has not been added to Info.plist
-    // Otherwise return the prefersStatusBarHidden set by the view controller
-    if (![[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"]) {
-        return [UIApplication sharedApplication].statusBarHidden;
-    }
-    else {
-        return [self currentViewController].prefersStatusBarHidden;
-    }
+    // Return the prefersStatusBarHidden set by the view controller -- it's more common that the `perfersStatusBarHidden` method would be implemented than anything else
+    return [self currentViewController].prefersStatusBarHidden;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -438,7 +434,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
         // iAd specific stuff
         if (_iAdView) {
             adType = CJPAdNetworkiAd;
-
+            
             // If configured to support iOS >= 6.0 only, then we want to avoid currentContentSizeIdentifier as it is deprecated.
             // Fortunately all we need to do is ask the banner for a size that fits into the layout area we are using.
             // At this point in this method contentFrame=self.view.bounds, so we'll use that size for the layout.
@@ -523,7 +519,7 @@ static NSString * const CJPAdsPurchasedKey = @"adRemovalPurchased";
     if (_isTabBar && _aboveTabBar && _adPosition==CJPAdPositionBottom) {
         tbcView.frame = contentFrame;
     }
-    else {
+    else if (_adjustsViewControllerFrame) {
         _contentController.view.frame = contentFrame;
     }
 }
